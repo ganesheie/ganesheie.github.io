@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Location and Device Info</title>
+  </head>
+  <body>
+    <h1>Your Location & Device Info</h1>
+    <p id="location">Loading location...</p>
+    <p id="device">Loading device info...</p>
+
+    <script>
+      // Fetch location data from ipapi.co API
+      fetch("https://ipapi.co/json/")
+        .then((response) => response.json())
+        .then((data) => {
+          // Extracting location details
+          const city = data.city;
+          const country = data.country_name;
+          const region = data.region;
+          const ip = data.ip;
+
+          // Display location details in the DOM
+          document.getElementById(
+            "location"
+          ).innerText = `IP: ${ip}\nCity: ${city}\nRegion: ${region}\nCountry: ${country}`;
+        })
+        .catch((error) => {
+          console.error("Error fetching location data:", error);
+          document.getElementById("location").innerText =
+            "Failed to load location data";
+        });
+
+      // Get user agent and device info
+      const userAgent = navigator.userAgent;
+      const platform = navigator.platform;
+      const language = navigator.language;
+
+      // Display device info in the DOM
+      document.getElementById(
+        "device"
+      ).innerText = `User Agent: ${userAgent}\nPlatform: ${platform}\nLanguage: ${language}`;
+
+      // Logging details in the console
+      console.log("User Agent:", userAgent);
+      console.log("Platform:", platform);
+      console.log("Language:", language);
+    </script>
+  </body>
+</html>
