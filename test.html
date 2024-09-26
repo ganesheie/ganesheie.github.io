@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/bowser@2.11.0/bundled.js"></script>
+
     <title>Get Location and Device Info</title>
   </head>
   <body>
@@ -11,53 +13,11 @@
     <p id="device">Loading device info...</p>
 
     <script>
-      function getBrowserInfo() {
-        const ua = navigator.userAgent;
+      const parser = bowser.getParser(window.navigator.userAgent);
+      const browser = parser.getBrowser();
+      const os = parser.getOS();
+      const platformType = parser.getPlatformType();
 
-        let browserName = "Unknown";
-        let browserVersion = "Unknown";
-
-        if (ua.indexOf("Chrome") > -1) {
-          browserName = "Chrome";
-          browserVersion = ua.match(/Chrome\/([0-9.]+)/)[1];
-        } else if (ua.indexOf("Safari") > -1) {
-          browserName = "Safari";
-          browserVersion = ua.match(/Version\/([0-9.]+)/)[1];
-        } else if (ua.indexOf("Firefox") > -1) {
-          browserName = "Firefox";
-          browserVersion = ua.match(/Firefox\/([0-9.]+)/)[1];
-        } else if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident/") > -1) {
-          browserName = "Internet Explorer";
-          browserVersion = ua.match(/(MSIE |rv:)([0-9.]+)/)[2];
-        }
-
-        return {
-          browserName,
-          browserVersion,
-        };
-      }
-
-      function getOSInfo() {
-        const ua = navigator.userAgent;
-
-        let osName = "Unknown OS";
-
-        if (ua.indexOf("Win") > -1) {
-          osName = "Windows";
-        } else if (ua.indexOf("Mac") > -1) {
-          osName = "Mac OS";
-        } else if (ua.indexOf("Linux") > -1) {
-          osName = "Linux";
-        } else if (ua.indexOf("Android") > -1) {
-          osName = "Android";
-        } else if (ua.indexOf("like Mac") > -1) {
-          osName = "iOS";
-        }
-
-        return osName;
-      }
-
-      // Fetch location data from ipapi.co API
       fetch("https://ipapi.co/json/")
         .then((response) => response.json())
         .then((data) => {
@@ -82,18 +42,11 @@
       const userAgent = navigator.userAgent;
       const platform = navigator.platform;
       const language = navigator.language;
-      const browserInfo = getBrowserInfo();
-      const osInfo = getOSInfo();
 
       // Display device info in the DOM
       document.getElementById(
         "device"
-      ).innerText = `User Agent: ${browserInfo.browserName}\nVersion : ${browserInfo.browserVersion}\nOS: ${osInfo}\nLanguage: ${language}`;
-
-      // Logging details in the console
-      console.log("User Agent:", userAgent);
-      console.log("Platform:", platform);
-      console.log("Language:", language);
+      ).innerText = `Browser: ${browser.name} \n Browser Version : ${browser.version}\nOS: ${os.name}\nOS Version:  ${os.version}\nDevice Type: ${platformType}`;
     </script>
   </body>
 </html>
