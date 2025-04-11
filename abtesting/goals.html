@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Goals - AB Testing</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f94144;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .goal-types {
+            padding: 20px;
+        }
+        
+        .goal-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .goal-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .goal-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .goal-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .goal-config {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        
+        .goal-config.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            border: 1px solid var(--gray);
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Configure Test Goals</h1>
+            <p>Define what success looks like for your AB test</p>
+        </div>
+        
+        <div class="goal-types">
+            <h2>Select Goal Type</h2>
+            
+            <div class="goal-card selected" data-goal-type="click">
+                <div style="display: flex; align-items: center;">
+                    <span class="goal-icon">🖱️</span>
+                    <div>
+                        <h3>Click Tracking</h3>
+                        <p>Measure clicks on specific buttons or links</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="goal-card" data-goal-type="time">
+                <div style="display: flex; align-items: center;">
+                    <span class="goal-icon">⏱️</span>
+                    <div>
+                        <h3>Time on Page</h3>
+                        <p>Measure how long users stay engaged</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="goal-card" data-goal-type="scroll">
+                <div style="display: flex; align-items: center;">
+                    <span class="goal-icon">📜</span>
+                    <div>
+                        <h3>Scroll Depth</h3>
+                        <p>Measure how far users scroll down the page</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="goal-card" data-goal-type="conversion">
+                <div style="display: flex; align-items: center;">
+                    <span class="goal-icon">💰</span>
+                    <div>
+                        <h3>Conversion</h3>
+                        <p>Track visits to a specific conversion page</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Click Tracking Configuration -->
+        <div class="goal-config active" id="click-config">
+            <h2>Click Tracking Setup</h2>
+            <div class="form-group">
+                <label for="click-element">CSS Selector for Element</label>
+                <input type="text" id="click-element" placeholder="e.g., #signup-button, .cta-btn">
+                <small>Use any valid CSS selector to target the clickable element</small>
+            </div>
+            <div class="form-group">
+                <label for="click-name">Goal Name</label>
+                <input type="text" id="click-name" placeholder="e.g., Signup Button Click">
+            </div>
+        </div>
+        
+        <!-- Time on Page Configuration -->
+        <div class="goal-config" id="time-config">
+            <h2>Time on Page Setup</h2>
+            <div class="form-group">
+                <label for="time-threshold">Minimum Time (seconds)</label>
+                <input type="number" id="time-threshold" placeholder="e.g., 30">
+                <small>Count as success when users stay longer than this duration</small>
+            </div>
+            <div class="form-group">
+                <label for="time-name">Goal Name</label>
+                <input type="text" id="time-name" placeholder="e.g., Engaged Visitors">
+            </div>
+        </div>
+        
+        <!-- Scroll Depth Configuration -->
+        <div class="goal-config" id="scroll-config">
+            <h2>Scroll Depth Setup</h2>
+            <div class="form-group">
+                <label for="scroll-percentage">Scroll Depth Percentage</label>
+                <select id="scroll-percentage">
+                    <option value="25">25% of page</option>
+                    <option value="50">50% of page</option>
+                    <option value="75">75% of page</option>
+                    <option value="90">90% of page</option>
+                    <option value="100">100% (full page)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="scroll-name">Goal Name</label>
+                <input type="text" id="scroll-name" placeholder="e.g., Content Engagement">
+            </div>
+        </div>
+        
+        <!-- Conversion Page Configuration -->
+        <div class="goal-config" id="conversion-config">
+            <h2>Conversion Setup</h2>
+            <div class="form-group">
+                <label for="conversion-url">Conversion Page URL</label>
+                <input type="text" id="conversion-url" placeholder="e.g., /thank-you or /checkout/complete">
+                <small>URL path after your domain (matches any page containing this path)</small>
+            </div>
+            <div class="form-group">
+                <label for="conversion-name">Goal Name</label>
+                <input type="text" id="conversion-name" placeholder="e.g., Purchase Completed">
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <div>
+                <button class="btn btn-secondary">Add Another Goal</button>
+            </div>
+            <div>
+                <button class="btn btn-secondary">Back</button>
+                <button class="btn btn-primary">Save & Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Goal type selection
+        document.querySelectorAll('.goal-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.goal-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                card.classList.add('selected');
+                
+                // Hide all config panels
+                document.querySelectorAll('.goal-config').forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                
+                // Show selected config panel
+                const goalType = card.getAttribute('data-goal-type');
+                document.getElementById(`${goalType}-config`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

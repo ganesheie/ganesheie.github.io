@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create AB Test - Example Site</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --control: #4895ef;
+            --variant: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input[type="text"], input[type="url"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .test-type {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .test-type-option {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .test-type-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .test-type-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .variant-container {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .variant {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .variant-header {
+            padding: 10px 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .variant-a .variant-header {
+            background: var(--control);
+        }
+        
+        .variant-b .variant-header {
+            background: var(--variant);
+        }
+        
+        .variant-content {
+            padding: 15px;
+            background: white;
+            min-height: 300px;
+        }
+        
+        .traffic-slider {
+            width: 100%;
+            margin: 30px 0;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            border: 1px solid var(--gray);
+        }
+        
+        .editor-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .editor-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .editor-tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Create New AB Test</h1>
+        </div>
+        
+        <div class="form-group">
+            <label for="test-name">Test Name</label>
+            <input type="text" id="test-name" placeholder="Example Site Header Test">
+        </div>
+        
+        <div class="form-group">
+            <label for="target-url">URL Target</label>
+            <input type="url" id="target-url" placeholder="https://example.com">
+        </div>
+        
+        <div class="form-group">
+            <label>Test Type</label>
+            <div class="test-type">
+                <div class="test-type-option selected">
+                    <h3>Visual Variation</h3>
+                    <p>Modify elements on the same page</p>
+                </div>
+                <div class="test-type-option">
+                    <h3>Redirect</h3>
+                    <p>Test completely different URLs</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="editor-tabs">
+            <div class="editor-tab active">Visual Editor</div>
+            <div class="editor-tab">CSS Selectors</div>
+            <div class="editor-tab">Code View</div>
+        </div>
+        
+        <div class="variant-container">
+            <div class="variant variant-a">
+                <div class="variant-header">Variant A (Control)</div>
+                <div class="variant-content">
+                    <!-- Example content matching your screenshot -->
+                    <h1>example site</h1>
+                    <h2>Quick Action</h2>
+                    <ul>
+                        <li>Top Experiences</li>
+                        <li><strong>...</strong></li>
+                        <li>announcement</li>
+                    </ul>
+                    <hr>
+                    <h3>US seg ann</h3>
+                    <p>78 Views</p>
+                </div>
+            </div>
+            
+            <div class="variant variant-b">
+                <div class="variant-header">Variant B</div>
+                <div class="variant-content">
+                    <!-- Editable version -->
+                    <h1>example site</h1>
+                    <h2>Quick Action</h2>
+                    <ul>
+                        <li>Top Experiences</li>
+                        <li><strong>...</strong></li>
+                        <li contenteditable="true" style="background-color: #fffacd;">notification</li>
+                    </ul>
+                    <hr>
+                    <h3>US seg ann</h3>
+                    <p>78 Views</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Traffic Allocation</label>
+            <input type="range" min="0" max="100" value="50" class="traffic-slider">
+            <div class="slider-labels">
+                <span>100% A</span>
+                <span>50/50</span>
+                <span>100% B</span>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn btn-secondary">Save Draft</button>
+            <button class="btn btn-primary">Start Test</button>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction for demo purposes
+        document.querySelectorAll('.test-type-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.test-type-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+            });
+        });
+        
+        document.querySelectorAll('.editor-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.editor-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
